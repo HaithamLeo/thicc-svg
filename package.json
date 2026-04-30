@@ -1,14 +1,12 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
-    "dev": "npm run dev:engine & npm run dev:web",
-    "dev:engine": "npm --workspace=packages/engine run dev",
-    "dev:web": "npm --workspace=packages/web run dev",
-    "build": "npm --workspace=packages/engine run build && npm --workspace=packages/web run build",
-    "build:engine": "npm --workspace=packages/engine run build"
+    "dev": "pnpm run dev:engine & pnpm run dev:web",
+    "dev:engine": "pnpm --filter=thicc-svg run dev",
+    "dev:web": "pnpm --filter=thicc-svg-web run dev",
+    "build": "pnpm --filter=thicc-svg run build && pnpm --filter=thicc-svg-web run build",
+    "build:engine": "pnpm --filter=thicc-svg run build"
   },
   "engines": {
     "node": ">=18"

@@ -11,19 +11,19 @@ The easiest way to turn SVGs into interactive 3D.
 
 This is a monorepo with two packages:
 
-| Package | Description |
-|---------|-------------|
-| [`packages/engine`](packages/engine/) | Embeddable `<SVG3D>` React component — published to npm as [`thicc-svg`](https://www.npmjs.com/package/thicc-svg) |
-| [`packages/web`](packages/web/) | Visual editor at [thicc-svg.design](https://thicc-svg.design) — design 3D objects and export as images, video, 3D models, or embed code |
+| Package                               | Description                                                                                                                             |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| [`packages/engine`](packages/engine/) | Embeddable `<SVG3D>` React component — published to npm as [`thicc-svg`](https://www.npmjs.com/package/thicc-svg)                       |
+| [`packages/web`](packages/web/)       | Visual editor at [thicc-svg.design](https://thicc-svg.design) — design 3D objects and export as images, video, 3D models, or embed code |
 
 The web editor renders the engine's `<SVG3D>` component directly — what you see in the editor is exactly what you get with the embed.
 
 ## Quick Start
 
 ```bash
-npm install
-npm run build:engine
-npm run dev:web
+pnpm install
+pnpm run build:engine
+pnpm run dev:web
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
@@ -31,7 +31,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Embed
 
 ```bash
-npm install thicc-svg
+pnpm add thicc-svg
 ```
 
 ```tsx
@@ -82,16 +82,16 @@ thicc-svg/
 
 ## Tech Stack
 
-| Library | Purpose |
-|---------|---------|
-| [Next.js 16](https://nextjs.org/) | App framework (web) |
-| [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) | Declarative Three.js |
-| [Three.js](https://threejs.org/) | 3D rendering |
-| [tsup](https://tsup.egoist.dev/) | Engine bundler |
-| [opentype.js](https://opentype.js.org/) | Font to vector paths |
-| [FFmpeg WASM](https://ffmpegwasm.netlify.app/) | Video conversion (web) |
-| [shadcn/ui](https://ui.shadcn.com/) | UI components (web) |
-| [Tailwind CSS v4](https://tailwindcss.com/) | Styling (web) |
+| Library                                                     | Purpose                |
+| ----------------------------------------------------------- | ---------------------- |
+| [Next.js 16](https://nextjs.org/)                           | App framework (web)    |
+| [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) | Declarative Three.js   |
+| [Three.js](https://threejs.org/)                            | 3D rendering           |
+| [tsup](https://tsup.egoist.dev/)                            | Engine bundler         |
+| [opentype.js](https://opentype.js.org/)                     | Font to vector paths   |
+| [FFmpeg WASM](https://ffmpegwasm.netlify.app/)              | Video conversion (web) |
+| [shadcn/ui](https://ui.shadcn.com/)                         | UI components (web)    |
+| [Tailwind CSS v4](https://tailwindcss.com/)                 | Styling (web)          |
 
 ## License
 
