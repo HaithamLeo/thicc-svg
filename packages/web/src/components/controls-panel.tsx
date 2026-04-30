@@ -156,13 +156,19 @@ function Section({
   };
 
   return (
-    <div className="border-b border-white/[0.06]">
+    <div className="border-b border-white/[0.04]">
       <button
         onClick={toggle}
-        className={`flex w-full items-center gap-2 py-3 px-4 cursor-pointer transition-colors ${open ? "bg-white/[0.03]" : "hover:bg-white/[0.03]"}`}
+        className={`flex w-full items-center gap-2.5 py-3 px-4 cursor-pointer transition-all duration-200 ${open ? "bg-primary/[0.04]" : "hover:bg-white/[0.02]"}`}
       >
-        <Icon className="h-4 w-4 text-muted-foreground" />
-        <span className="text-sm font-medium flex-1 text-left">{title}</span>
+        <Icon
+          className={`h-4 w-4 transition-colors duration-200 ${open ? "text-primary" : "text-muted-foreground"}`}
+        />
+        <span
+          className={`text-sm font-medium flex-1 text-left transition-colors duration-200 ${open ? "text-foreground" : "text-muted-foreground"}`}
+        >
+          {title}
+        </span>
         <ChevronDown
           className={`h-4 w-4 text-muted-foreground transition-transform duration-200 ${
             open ? "rotate-180" : ""
@@ -178,7 +184,7 @@ function Section({
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="px-4 pt-4 pb-4 space-y-3">{children}</div>
+            <div className="px-4 pt-3 pb-4 space-y-3">{children}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -315,10 +321,12 @@ export function ControlsPanel({
   };
 
   return (
-    <div className="w-72 max-md:w-full rounded-xl bg-card/70 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_oklch(0_0_0/0.4)] h-full flex flex-col overflow-hidden">
+    <div className="relative w-72 max-md:w-full rounded-xl bg-card/70 backdrop-blur-2xl border border-primary/[0.08] shadow-[0_0_30px_oklch(0.78_0.2_185/0.05),0_8px_40px_oklch(0_0_0/0.5)] h-full flex flex-col overflow-hidden">
+      {/* Top neon accent line */}
+      <div className="absolute top-0 left-3 right-3 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent z-10" />
       {/* Header -- fixed at top */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-white/[0.06] shrink-0">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <span className="text-xs font-semibold text-primary/80 uppercase tracking-widest glow-text">
           Settings
         </span>
         <button
@@ -328,7 +336,7 @@ export function ControlsPanel({
           <X className="h-4 w-4" />
         </button>
       </div>
-      <div className="flex-1 overflow-y-auto scrollbar-none">
+      <div className="flex-1 overflow-y-auto scrollbar-thin">
         {/* 1. Object */}
         <Section
           icon={Box}
@@ -492,13 +500,17 @@ export function ControlsPanel({
                   transparent: p.transparent,
                 });
               }}
-              className="w-full h-8 rounded-md border border-input bg-background/30 px-3 pr-8 text-xs ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring appearance-none bg-no-repeat bg-[right_8px_center] bg-[length:12px]"
+              className="w-full h-8 rounded-md border border-input bg-secondary text-foreground px-3 pr-8 text-xs ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring appearance-none bg-no-repeat bg-[right_8px_center] bg-[length:12px]"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
               }}
             >
               {(Object.keys(materialPresets) as MaterialPreset[]).map((key) => (
-                <option key={key} value={key}>
+                <option
+                  key={key}
+                  value={key}
+                  className="bg-secondary text-foreground"
+                >
                   {MATERIAL_PRESET_NAMES[key]}
                 </option>
               ))}
@@ -722,13 +734,17 @@ export function ControlsPanel({
             <select
               value={animate}
               onChange={(e) => onAnimateChange(e.target.value as AnimationType)}
-              className="w-full h-8 rounded-md border border-input bg-background/30 px-3 pr-8 text-xs ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring appearance-none bg-no-repeat bg-[right_8px_center] bg-[length:12px]"
+              className="w-full h-8 rounded-md border border-input bg-secondary text-foreground px-3 pr-8 text-xs ring-offset-background focus:outline-none focus:ring-1 focus:ring-ring appearance-none bg-no-repeat bg-[right_8px_center] bg-[length:12px]"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
               }}
             >
               {ANIMATION_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  className="bg-secondary text-foreground"
+                >
                   {opt.label}
                 </option>
               ))}

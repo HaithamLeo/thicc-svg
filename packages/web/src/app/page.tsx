@@ -18,6 +18,7 @@ import {
   MessageCircle,
   Download,
   Braces,
+  MoreHorizontal,
 } from "lucide-react";
 import {
   defaultLightSettings,
@@ -31,6 +32,11 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { InputPanel } from "@/components/input-panel";
 import { ControlsPanel } from "@/components/controls-panel";
 import { ExportModal } from "@/components/export-bar";
@@ -290,14 +296,22 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, oklch(0.20 0.08 195 / 0.08) 0%, transparent 60%)",
+            "radial-gradient(ellipse at 50% 40%, oklch(0.25 0.12 185 / 0.06) 0%, transparent 55%)",
         }}
       />
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 40%, oklch(0.04 0.02 240 / 0.6) 100%)",
+            "radial-gradient(ellipse at center, transparent 35%, oklch(0.03 0.03 250 / 0.7) 100%)",
+        }}
+      />
+      {/* Subtle scan-line overlay */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] opacity-[0.015]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, oklch(1 0 0 / 0.5) 2px, oklch(1 0 0 / 0.5) 3px)",
         }}
       />
 
@@ -330,62 +344,66 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Top-right: embed + gear buttons */}
+      {/* Top-right: primary actions + overflow menu */}
       <div
-        className={`pointer-events-auto absolute top-5 right-5 flex gap-2 ${topPanel === "settings" ? "z-[60]" : "z-[8]"}`}
+        className={`pointer-events-auto absolute top-5 right-5 flex items-center gap-2 ${topPanel === "settings" ? "z-[60]" : "z-[8]"}`}
       >
-        <Tooltip>
-          <TooltipTrigger asChild>
+        {/* Overflow menu for secondary actions */}
+        <Popover>
+          <PopoverTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setFeedbackOpen(true)}
-              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
+              className="rounded-full bg-card/70 backdrop-blur-2xl border border-primary/[0.1] shadow-[0_0_25px_oklch(0.78_0.2_185/0.06),0_8px_32px_oklch(0_0_0/0.5)] h-9 w-9 hover:border-primary/30 hover:shadow-[0_0_30px_oklch(0.78_0.2_185/0.2)] transition-all duration-300"
             >
-              <MessageCircle className="h-4 w-4" />
+              <MoreHorizontal className="h-4 w-4" />
             </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Feedback</TooltipContent>
-        </Tooltip>
+          </PopoverTrigger>
+          <PopoverContent
+            side="bottom"
+            align="end"
+            className="w-44 p-1.5 bg-card/90 backdrop-blur-2xl border-primary/[0.1] shadow-[0_0_30px_oklch(0.78_0.2_185/0.08)]"
+          >
+            <button
+              onClick={() => setFeedbackOpen(true)}
+              className="flex items-center gap-2.5 w-full rounded-md px-2.5 py-2 text-xs text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+            >
+              <MessageCircle className="h-3.5 w-3.5 text-muted-foreground" />
+              Feedback
+            </button>
+            <button
+              onClick={() => setEmbedOpen(true)}
+              className="flex items-center gap-2.5 w-full rounded-md px-2.5 py-2 text-xs text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+            >
+              <CodeXml className="h-3.5 w-3.5 text-muted-foreground" />
+              Embed Code
+            </button>
+            <button
+              onClick={() => setSettingsExportOpen(true)}
+              className="flex items-center gap-2.5 w-full rounded-md px-2.5 py-2 text-xs text-foreground hover:bg-primary/10 hover:text-primary transition-colors"
+            >
+              <Braces className="h-3.5 w-3.5 text-muted-foreground" />
+              Export Settings
+            </button>
+          </PopoverContent>
+        </Popover>
+
+        {/* Primary: Download */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setDownloadOpen(true)}
-              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
+              className="rounded-full bg-card/70 backdrop-blur-2xl border border-primary/[0.1] shadow-[0_0_25px_oklch(0.78_0.2_185/0.06),0_8px_32px_oklch(0_0_0/0.5)] h-10 w-10 hover:border-primary/40 hover:shadow-[0_0_30px_oklch(0.78_0.2_185/0.2)] hover:text-primary transition-all duration-300"
             >
               <Download className="h-4 w-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom">Download 3D</TooltipContent>
         </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSettingsExportOpen(true)}
-              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
-            >
-              <Braces className="h-4 w-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Three.js Settings</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setEmbedOpen(true)}
-              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
-            >
-              <CodeXml className="h-4 w-4" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">Embed</TooltipContent>
-        </Tooltip>
+
+        {/* Primary: Settings toggle */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -395,8 +413,10 @@ export default function Home() {
                 setControlsOpen((v) => !v);
                 setTopPanel("settings");
               }}
-              className={`rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300 ${
-                controlsOpen ? "text-primary glow-text" : ""
+              className={`rounded-full bg-card/70 backdrop-blur-2xl border border-primary/[0.1] shadow-[0_0_25px_oklch(0.78_0.2_185/0.06),0_8px_32px_oklch(0_0_0/0.5)] h-10 w-10 hover:border-primary/40 hover:shadow-[0_0_30px_oklch(0.78_0.2_185/0.2)] transition-all duration-300 ${
+                controlsOpen
+                  ? "text-primary border-primary/50 glow-border glow-text"
+                  : ""
               }`}
             >
               <Settings2 className="h-4 w-4" />
@@ -414,8 +434,8 @@ export default function Home() {
             ? { opacity: 1, x: 0, pointerEvents: "auto" as const }
             : { opacity: 0, x: 20, pointerEvents: "none" as const }
         }
-        transition={{ duration: 0.2 }}
-        className={`absolute top-5 right-5 bottom-5 max-md:left-5 ${topPanel === "settings" ? "z-[60]" : "z-[8]"}`}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        className={`absolute top-16 right-5 bottom-5 max-md:left-5 ${topPanel === "settings" ? "z-[60]" : "z-[8]"}`}
       >
         <ControlsPanel
           depth={depth}
@@ -469,9 +489,11 @@ export default function Home() {
           animate={{ opacity: 1 }}
           className="fixed inset-0 z-[100] flex items-center justify-center"
         >
-          <div className="absolute inset-2 rounded-2xl border-2 border-dashed border-primary/30 bg-card/40 backdrop-blur-xl flex flex-col items-center justify-center gap-4 shadow-[inset_0_0_60px_oklch(0.75_0.18_195/0.05)]">
+          <div className="absolute inset-3 rounded-2xl border border-primary/40 bg-card/30 backdrop-blur-2xl flex flex-col items-center justify-center gap-4 shadow-[0_0_60px_oklch(0.78_0.2_185/0.08),inset_0_0_80px_oklch(0.78_0.2_185/0.03)]">
+            {/* Animated border glow */}
+            <div className="absolute inset-0 rounded-2xl border border-primary/20 animate-pulse" />
             <svg
-              className="h-16 w-16 text-white/50"
+              className="h-16 w-16 text-primary/60"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -483,7 +505,7 @@ export default function Home() {
                 d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
               />
             </svg>
-            <span className="text-xl font-medium text-white/60">
+            <span className="text-xl font-medium text-primary/70 glow-text">
               Drop SVG file
             </span>
           </div>
