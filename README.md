@@ -96,5 +96,3 @@ thicc-svg/
 ## License
 
 MIT — [HaithamLeo](https://github.com/HaithamLeo)
-
-Made in [Blueberry](https://meetblueberry.com) 🫐
