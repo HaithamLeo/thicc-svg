@@ -485,7 +485,7 @@ export function SVGTo3DCanvas({
         animateSpeed={animateSpeed}
         animateReverse={animateReverse}
         scrollZoom
-        background="#0a0e14"
+        background="#060a10"
         width="100%"
         height="100%"
         intro="zoom"
@@ -525,24 +525,24 @@ export function SVGTo3DCanvas({
         <group ref={shadowRef}>
           <Grid
             position={[0, -2, 0]}
-            args={[50, 50]}
-            cellSize={0.5}
-            cellThickness={0.4}
-            cellColor="#1a2a3a"
-            sectionSize={2.5}
-            sectionThickness={1.0}
-            sectionColor="#00d4ff"
-            fadeDistance={25}
-            fadeStrength={1.5}
+            args={[60, 60]}
+            cellSize={0.4}
+            cellThickness={0.3}
+            cellColor="#0d1f30"
+            sectionSize={2}
+            sectionThickness={0.8}
+            sectionColor="#00e5ff"
+            fadeDistance={30}
+            fadeStrength={1.8}
             infiniteGrid
           />
           <ContactShadows
             position={[0, -1.99, 0]}
-            opacity={0.6}
-            scale={12}
-            blur={2.5}
-            far={5}
-            color="#001a2e"
+            opacity={0.7}
+            scale={14}
+            blur={2}
+            far={6}
+            color="#001825"
           />
         </group>
 
