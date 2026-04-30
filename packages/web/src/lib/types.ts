@@ -12,8 +12,8 @@ import { materialPresets } from "thicc-svg";
 
 export const defaultMaterialSettings = {
   preset: "default" as const,
-  metalness: materialPresets.default.metalness,
-  roughness: materialPresets.default.roughness,
+  metalness: 0,
+  roughness: 0.5,
   opacity: materialPresets.default.opacity,
   transparent: materialPresets.default.transparent,
   wireframe: false,

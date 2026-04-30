@@ -131,20 +131,24 @@ function createEmptyGrid(size: number): boolean[][] {
 }
 
 function createDefaultGrid(): boolean[][] {
-  // Classic Space Invader — symmetric, centered in 16x16
+  // Derpy Cat — one big eye, one winking eye, tongue out
   // Using a bitmap approach: define rows as binary strings (1=filled)
   const rows = [
-    "0000100000010000",  // row 3:  antennas
-    "0000010000100000",  // row 4
-    "0000111111110000",  // row 5:  head
-    "0001101111011000",  // row 6:  head with eyes
-    "0011111111111100",  // row 7:  wide body
-    "0010111111110100",  // row 8:  body
-    "0010100000010100",  // row 9:  legs top
-    "0000011001100000",  // row 10: feet
+    "0010000000001000", // ear tips
+    "0011000000011000", // ears
+    "0011111111111000", // head top
+    "0111111111111100", // head
+    "0111001111011100", // eyes (left 2px, right 1px = derpy wink)
+    "0111001111111100", // left eye row 2, right winks
+    "0111111111111100", // cheeks
+    "0111111001111100", // nose
+    "0111110000111100", // mouth
+    "0011111111111000", // chin
+    "0001111111110000", // jaw
+    "0000001100000000", // tongue
   ];
   const grid = createEmptyGrid(16);
-  const startY = 4; // vertically center (16 - 8 rows) / 2 = 4
+  const startY = 2; // vertically center (16 - 12 rows) / 2 = 2
   for (let r = 0; r < rows.length; r++) {
     for (let c = 0; c < 16; c++) {
       if (rows[r][c] === "1") {
@@ -188,7 +192,7 @@ export function PixelEditor({ onSvgChange }: PixelEditorProps) {
         return next;
       });
     },
-    [tool]
+    [tool],
   );
 
   const handlePointerDown = useCallback(
@@ -196,14 +200,14 @@ export function PixelEditor({ onSvgChange }: PixelEditorProps) {
       setIsDrawing(true);
       togglePixel(x, y);
     },
-    [togglePixel]
+    [togglePixel],
   );
 
   const handlePointerEnter = useCallback(
     (x: number, y: number) => {
       if (isDrawing) togglePixel(x, y);
     },
-    [isDrawing, togglePixel]
+    [isDrawing, togglePixel],
   );
 
   const handlePointerUp = useCallback(() => {
@@ -286,7 +290,7 @@ export function PixelEditor({ onSvgChange }: PixelEditorProps) {
                     boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.08)",
                   }}
                 />
-              ))
+              )),
             )}
           </div>
         )}

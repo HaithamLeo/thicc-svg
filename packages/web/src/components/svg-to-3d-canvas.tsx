@@ -12,6 +12,7 @@
 
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useThree } from "@react-three/fiber";
+import { Grid, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter.js";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
@@ -37,8 +38,12 @@ function createGlowTexture(): THREE.Texture {
   canvas.height = size;
   const ctx = canvas.getContext("2d")!;
   const gradient = ctx.createRadialGradient(
-    size / 2, size / 2, 0,
-    size / 2, size / 2, size / 2
+    size / 2,
+    size / 2,
+    0,
+    size / 2,
+    size / 2,
+    size / 2,
   );
   gradient.addColorStop(0, "rgba(255, 248, 200, 1)");
   gradient.addColorStop(0.1, "rgba(255, 220, 100, 0.8)");
@@ -83,7 +88,14 @@ function DownloadCapture({
   lightOrbRef,
   bgPlaneRef,
 }: {
-  registerCapture?: (fn: (resolution: number, withBackground: boolean, onCapture: (dataUrl: string) => void, aspectRatio?: number | null) => void) => void;
+  registerCapture?: (
+    fn: (
+      resolution: number,
+      withBackground: boolean,
+      onCapture: (dataUrl: string) => void,
+      aspectRatio?: number | null,
+    ) => void,
+  ) => void;
   shadowRef: React.RefObject<THREE.Group | null>;
   lightOrbRef: React.RefObject<THREE.Group | null>;
   bgPlaneRef: React.RefObject<THREE.Mesh | null>;
@@ -109,7 +121,7 @@ function DownloadCapture({
       const prevHeight = canvas.height;
       const prevStyle = canvas.style.cssText;
 
-      const renderAspect = aspectRatio ?? (prevWidth / prevHeight);
+      const renderAspect = aspectRatio ?? prevWidth / prevHeight;
       const w = resolution;
       const h = Math.round(resolution / renderAspect);
 
@@ -139,7 +151,10 @@ function DownloadCapture({
         const imageData = tmpCtx.getImageData(0, 0, w, h);
         const data = imageData.data;
 
-        let minX = w, minY = h, maxX = 0, maxY = 0;
+        let minX = w,
+          minY = h,
+          maxX = 0,
+          maxY = 0;
         for (let y = 0; y < h; y++) {
           for (let x = 0; x < w; x++) {
             const alpha = data[(y * w + x) * 4 + 3];
@@ -167,8 +182,14 @@ function DownloadCapture({
         const croppedCtx = croppedCanvas.getContext("2d")!;
         croppedCtx.drawImage(
           tmpCanvas,
-          x0, y0, x1 - x0, y1 - y0,
-          0, 0, x1 - x0, y1 - y0
+          x0,
+          y0,
+          x1 - x0,
+          y1 - y0,
+          0,
+          0,
+          x1 - x0,
+          y1 - y0,
         );
 
         const dataUrl = croppedCanvas.toDataURL("image/png");
@@ -245,7 +266,9 @@ function buildExportGroup(scene: THREE.Scene, meshOnly = false): THREE.Group {
 function Download3DCapture({
   register3DExport,
 }: {
-  register3DExport?: (fn: (format: Export3DFormat, filename?: string, meshOnly?: boolean) => void) => void;
+  register3DExport?: (
+    fn: (format: Export3DFormat, filename?: string, meshOnly?: boolean) => void,
+  ) => void;
 }) {
   const { scene } = useThree();
 
@@ -257,26 +280,40 @@ function Download3DCapture({
 
       if (format === "stl") {
         const result = new STLExporter().parse(group, { binary: true });
-        triggerDownload(new Blob([result], { type: "model/stl" }), `${filename}.stl`);
+        triggerDownload(
+          new Blob([result], { type: "model/stl" }),
+          `${filename}.stl`,
+        );
       } else if (format === "obj") {
         const text = new OBJExporter().parse(group);
-        triggerDownload(new Blob([text], { type: "text/plain" }), `${filename}.obj`);
+        triggerDownload(
+          new Blob([text], { type: "text/plain" }),
+          `${filename}.obj`,
+        );
       } else if (format === "ply") {
-        const result = new PLYExporter().parse(group, () => {}, { binary: true });
+        const result = new PLYExporter().parse(group, () => {}, {
+          binary: true,
+        });
         if (result) {
-          triggerDownload(new Blob([result], { type: "application/octet-stream" }), `${filename}.ply`);
+          triggerDownload(
+            new Blob([result], { type: "application/octet-stream" }),
+            `${filename}.ply`,
+          );
         }
       } else if (format === "glb") {
         new GLTFExporter().parse(
           group,
           (result) => {
-            const blob = result instanceof ArrayBuffer
-              ? new Blob([result], { type: "model/gltf-binary" })
-              : new Blob([JSON.stringify(result)], { type: "model/gltf+json" });
+            const blob =
+              result instanceof ArrayBuffer
+                ? new Blob([result], { type: "model/gltf-binary" })
+                : new Blob([JSON.stringify(result)], {
+                    type: "model/gltf+json",
+                  });
             triggerDownload(blob, `${filename}.glb`);
           },
           (err) => console.error("GLTF export failed", err),
-          { binary: true }
+          { binary: true },
         );
       }
     });
@@ -330,9 +367,18 @@ interface SVGTo3DCanvasProps {
   resetKey: number;
   lightSettings: LightSettings;
   showLightHelper: boolean;
-  registerCapture?: (fn: (resolution: number, withBackground: boolean, onCapture: (dataUrl: string) => void, aspectRatio?: number | null) => void) => void;
+  registerCapture?: (
+    fn: (
+      resolution: number,
+      withBackground: boolean,
+      onCapture: (dataUrl: string) => void,
+      aspectRatio?: number | null,
+    ) => void,
+  ) => void;
   registerCanvas?: (canvas: HTMLCanvasElement) => void;
-  register3DExport?: (fn: (format: Export3DFormat, filename?: string, meshOnly?: boolean) => void) => void;
+  register3DExport?: (
+    fn: (format: Export3DFormat, filename?: string, meshOnly?: boolean) => void,
+  ) => void;
 }
 
 export function SVGTo3DCanvas({
@@ -371,18 +417,24 @@ export function SVGTo3DCanvas({
   const [showLoader, setShowLoader] = useState(false);
   const loaderTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleLoadingChange = useCallback((loading: boolean, progress: number) => {
-    setIsLoading(loading);
-    setLoadingProgress(progress);
-    if (loading) {
-      if (!loaderTimerRef.current) {
-        loaderTimerRef.current = setTimeout(() => setShowLoader(true), 800);
+  const handleLoadingChange = useCallback(
+    (loading: boolean, progress: number) => {
+      setIsLoading(loading);
+      setLoadingProgress(progress);
+      if (loading) {
+        if (!loaderTimerRef.current) {
+          loaderTimerRef.current = setTimeout(() => setShowLoader(true), 800);
+        }
+      } else {
+        if (loaderTimerRef.current) {
+          clearTimeout(loaderTimerRef.current);
+          loaderTimerRef.current = null;
+        }
+        setShowLoader(false);
       }
-    } else {
-      if (loaderTimerRef.current) { clearTimeout(loaderTimerRef.current); loaderTimerRef.current = null; }
-      setShowLoader(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   return (
     <>
@@ -391,76 +443,115 @@ export function SVGTo3DCanvas({
       >
         <div className="flex items-center gap-2 rounded-full bg-black/50 backdrop-blur-xl px-4 py-2">
           <div className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          <span className="text-xs text-white/70">{loadingProgress > 0 && loadingProgress < 100 ? `${loadingProgress}%` : "Loading..."}</span>
+          <span className="text-xs text-white/70">
+            {loadingProgress > 0 && loadingProgress < 100
+              ? `${loadingProgress}%`
+              : "Loading..."}
+          </span>
         </div>
       </div>
-    <SVG3D
-      svg={svg}
-      depth={depth}
-      smoothness={smoothness}
-      strokeScale={strokeScale}
-      color={color}
-      material={materialSettings.preset}
-      metalness={materialSettings.metalness}
-      roughness={materialSettings.roughness}
-      opacity={materialSettings.opacity}
-      wireframe={materialSettings.wireframe}
-      texture={textureUrl ?? undefined}
-      textureRepeat={textureSettings.repeatX}
-      textureRotation={textureSettings.rotation}
-      textureOffset={[textureSettings.offsetX, textureSettings.offsetY]}
-      lightPosition={[lightSettings.keyX, lightSettings.keyY, lightSettings.keyZ]}
-      lightIntensity={lightSettings.keyIntensity}
-      ambientIntensity={lightSettings.ambientIntensity}
-      shadow={lightSettings.shadowEnabled}
-      rotationX={rotationX}
-      rotationY={rotationY}
-      zoom={zoom}
-      resetKey={resetKey}
-      cursorOrbit={cursorOrbit}
-      orbitStrength={orbitStrength}
-      resetOnIdle={resetOnIdle}
-      resetDelay={resetDelay}
-      animate={animate}
-      animateSpeed={animateSpeed}
-      animateReverse={animateReverse}
-      scrollZoom
-      background="#0a0a0a"
-      width="100%"
-      height="100%"
-      intro="zoom"
-      onReady={() => setIsLoading(false)}
-      onLoadingChange={handleLoadingChange}
-      registerCanvas={registerCanvas}
-    >
-      {/* Export capture — needs GL access */}
-      <DownloadCapture
-        registerCapture={registerCapture}
-        shadowRef={shadowRef}
-        lightOrbRef={lightOrbRef}
-        bgPlaneRef={bgPlaneRef}
-      />
+      <SVG3D
+        svg={svg}
+        depth={depth}
+        smoothness={smoothness}
+        strokeScale={strokeScale}
+        color={color}
+        material={materialSettings.preset}
+        metalness={materialSettings.metalness}
+        roughness={materialSettings.roughness}
+        opacity={materialSettings.opacity}
+        wireframe={materialSettings.wireframe}
+        texture={textureUrl ?? undefined}
+        textureRepeat={textureSettings.repeatX}
+        textureRotation={textureSettings.rotation}
+        textureOffset={[textureSettings.offsetX, textureSettings.offsetY]}
+        lightPosition={[
+          lightSettings.keyX,
+          lightSettings.keyY,
+          lightSettings.keyZ,
+        ]}
+        lightIntensity={lightSettings.keyIntensity}
+        ambientIntensity={lightSettings.ambientIntensity}
+        shadow={lightSettings.shadowEnabled}
+        rotationX={rotationX}
+        rotationY={rotationY}
+        zoom={zoom}
+        resetKey={resetKey}
+        cursorOrbit={cursorOrbit}
+        orbitStrength={orbitStrength}
+        resetOnIdle={resetOnIdle}
+        resetDelay={resetDelay}
+        animate={animate}
+        animateSpeed={animateSpeed}
+        animateReverse={animateReverse}
+        scrollZoom
+        background="#0a0e14"
+        width="100%"
+        height="100%"
+        intro="zoom"
+        onReady={() => setIsLoading(false)}
+        onLoadingChange={handleLoadingChange}
+        registerCanvas={registerCanvas}
+      >
+        {/* Export capture — needs GL access */}
+        <DownloadCapture
+          registerCapture={registerCapture}
+          shadowRef={shadowRef}
+          lightOrbRef={lightOrbRef}
+          bgPlaneRef={bgPlaneRef}
+        />
 
-      {/* 3D model export — STL / GLB / OBJ / PLY */}
-      <Download3DCapture register3DExport={register3DExport} />
+        {/* 3D model export — STL / GLB / OBJ / PLY */}
+        <Download3DCapture register3DExport={register3DExport} />
 
-      {/* Light position indicator */}
-      <group ref={lightOrbRef}>
-        {showLightHelper && (
-          <mesh position={[lightSettings.keyX, lightSettings.keyY, lightSettings.keyZ]}>
-            <sphereGeometry args={[0.08, 16, 16]} />
-            <meshBasicMaterial color="#ffffff" />
-            <GlowSprite intensity={lightSettings.keyIntensity} />
-          </mesh>
-        )}
-      </group>
+        {/* Light position indicator */}
+        <group ref={lightOrbRef}>
+          {showLightHelper && (
+            <mesh
+              position={[
+                lightSettings.keyX,
+                lightSettings.keyY,
+                lightSettings.keyZ,
+              ]}
+            >
+              <sphereGeometry args={[0.08, 16, 16]} />
+              <meshBasicMaterial color="#ffffff" />
+              <GlowSprite intensity={lightSettings.keyIntensity} />
+            </mesh>
+          )}
+        </group>
 
-      {/* Background plane — gives glass/transmission materials something to refract through */}
-      <mesh ref={bgPlaneRef} position={[0, 0, -3]} receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color={bgColor} roughness={0.8} metalness={0} />
-      </mesh>
-    </SVG3D>
+        {/* Ground grid — futuristic neon floor */}
+        <group ref={shadowRef}>
+          <Grid
+            position={[0, -2, 0]}
+            args={[50, 50]}
+            cellSize={0.5}
+            cellThickness={0.4}
+            cellColor="#1a2a3a"
+            sectionSize={2.5}
+            sectionThickness={1.0}
+            sectionColor="#00d4ff"
+            fadeDistance={25}
+            fadeStrength={1.5}
+            infiniteGrid
+          />
+          <ContactShadows
+            position={[0, -1.99, 0]}
+            opacity={0.6}
+            scale={12}
+            blur={2.5}
+            far={5}
+            color="#001a2e"
+          />
+        </group>
+
+        {/* Background plane — gives glass/transmission materials something to refract through */}
+        <mesh ref={bgPlaneRef} position={[0, 0, -3]} receiveShadow>
+          <planeGeometry args={[100, 100]} />
+          <meshStandardMaterial color={bgColor} roughness={0.8} metalness={0} />
+        </mesh>
+      </SVG3D>
     </>
   );
 }
