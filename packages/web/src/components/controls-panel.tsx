@@ -56,6 +56,8 @@ import type { AnimationType } from "thicc-svg";
 interface ControlsPanelProps {
   depth: number;
   onDepthChange: (v: number) => void;
+  strokeScale: number;
+  onStrokeScaleChange: (v: number) => void;
   smoothness: number;
   onSmoothnessChange: (v: number) => void;
   color: string;
@@ -263,6 +265,8 @@ function CommitNumberInput({
 export function ControlsPanel({
   depth,
   onDepthChange,
+  strokeScale,
+  onStrokeScaleChange,
   smoothness,
   onSmoothnessChange,
   color,
@@ -387,6 +391,24 @@ export function ControlsPanel({
               min={0.05}
               max={10}
               step={0.05}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <Label className="text-xs font-medium text-muted-foreground">
+                Stroke
+              </Label>
+              <span className="text-xs text-muted-foreground font-mono">
+                {strokeScale.toFixed(1)}
+              </span>
+            </div>
+            <Slider
+              value={[strokeScale]}
+              onValueChange={([v]) => onStrokeScaleChange(v)}
+              min={0}
+              max={5}
+              step={0.1}
             />
           </div>
 
