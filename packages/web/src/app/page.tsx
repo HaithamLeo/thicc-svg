@@ -70,8 +70,8 @@ export default function Home() {
   const [depth, setDepth] = useState(1);
   const [smoothness, setSmoothness] = useState(0.6);
   const [strokeScale, setStrokeScale] = useState(1);
-  const [color, setColor] = useState("#4f46e5");
-  const [bgColor, setBgColor] = useState("#6961ff");
+  const [color, setColor] = useState("#808080");
+  const [bgColor, setBgColor] = useState("#2d2d2d");
   const [textureUrl, setTextureUrl] = useState<string | null>(null);
   const [textureSettings, setTextureSettings] = useState<TextureSettings>(
     defaultTextureSettings,
@@ -89,7 +89,8 @@ export default function Home() {
     | null
   >(null);
   const export3DFnRef = useRef<
-    ((format: Export3DFormat, filename?: string, meshOnly?: boolean) => void) | null
+    | ((format: Export3DFormat, filename?: string, meshOnly?: boolean) => void)
+    | null
   >(null);
   const [controlsOpen, setControlsOpen] = useState(false);
   const [topPanel, setTopPanel] = useState<"toolbar" | "settings">("toolbar");
@@ -140,7 +141,13 @@ export default function Home() {
   }, []);
 
   const register3DExport = useCallback(
-    (fn: (format: Export3DFormat, filename?: string, meshOnly?: boolean) => void) => {
+    (
+      fn: (
+        format: Export3DFormat,
+        filename?: string,
+        meshOnly?: boolean,
+      ) => void,
+    ) => {
       export3DFnRef.current = fn;
     },
     [],
@@ -150,7 +157,8 @@ export default function Home() {
     (format: Export3DFormat, meshOnly = false) => {
       const base =
         inputTab === "text" && currentText
-          ? currentText.replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "thicc-svg"
+          ? currentText.replace(/[^a-z0-9]+/gi, "-").toLowerCase() ||
+            "thicc-svg"
           : "thicc-svg";
       const suffix = meshOnly ? "-mesh" : "";
       export3DFnRef.current?.(format, base + suffix, meshOnly);
@@ -282,14 +290,14 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, oklch(0.13 0.01 275 / 0.15) 0%, transparent 70%)",
+            "radial-gradient(ellipse at center, oklch(0.20 0.08 195 / 0.08) 0%, transparent 60%)",
         }}
       />
       <div
         className="pointer-events-none absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 50%, oklch(0 0 0 / 0.3) 100%)",
+            "radial-gradient(ellipse at center, transparent 40%, oklch(0.04 0.02 240 / 0.6) 100%)",
         }}
       />
 
@@ -332,7 +340,7 @@ export default function Home() {
               variant="ghost"
               size="icon"
               onClick={() => setFeedbackOpen(true)}
-              className="rounded-full bg-card/70 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10"
+              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
             >
               <MessageCircle className="h-4 w-4" />
             </Button>
@@ -345,7 +353,7 @@ export default function Home() {
               variant="ghost"
               size="icon"
               onClick={() => setDownloadOpen(true)}
-              className="rounded-full bg-card/70 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10"
+              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
             >
               <Download className="h-4 w-4" />
             </Button>
@@ -358,7 +366,7 @@ export default function Home() {
               variant="ghost"
               size="icon"
               onClick={() => setSettingsExportOpen(true)}
-              className="rounded-full bg-card/70 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10"
+              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
             >
               <Braces className="h-4 w-4" />
             </Button>
@@ -371,7 +379,7 @@ export default function Home() {
               variant="ghost"
               size="icon"
               onClick={() => setEmbedOpen(true)}
-              className="rounded-full bg-card/70 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10"
+              className="rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300"
             >
               <CodeXml className="h-4 w-4" />
             </Button>
@@ -387,8 +395,8 @@ export default function Home() {
                 setControlsOpen((v) => !v);
                 setTopPanel("settings");
               }}
-              className={`rounded-full bg-card/70 backdrop-blur-xl border border-white/[0.06] shadow-[0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 ${
-                controlsOpen ? "text-primary" : ""
+              className={`rounded-full bg-card/60 backdrop-blur-2xl border border-white/[0.08] shadow-[0_0_20px_oklch(0.75_0.18_195/0.08),0_8px_32px_oklch(0_0_0/0.4)] h-10 w-10 hover:border-primary/30 hover:shadow-[0_0_24px_oklch(0.75_0.18_195/0.15)] transition-all duration-300 ${
+                controlsOpen ? "text-primary glow-text" : ""
               }`}
             >
               <Settings2 className="h-4 w-4" />
@@ -461,7 +469,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           className="fixed inset-0 z-[100] flex items-center justify-center"
         >
-          <div className="absolute inset-2 rounded-2xl border-2 border-dashed border-white/20 bg-card/40 flex flex-col items-center justify-center gap-4">
+          <div className="absolute inset-2 rounded-2xl border-2 border-dashed border-primary/30 bg-card/40 backdrop-blur-xl flex flex-col items-center justify-center gap-4 shadow-[inset_0_0_60px_oklch(0.75_0.18_195/0.05)]">
             <svg
               className="h-16 w-16 text-white/50"
               fill="none"
