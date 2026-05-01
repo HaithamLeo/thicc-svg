@@ -47,7 +47,6 @@ import {
   type ParsedSettings,
 } from "@/components/settings-export-dialog";
 import { Freedback } from "@/components/freedback";
-import { GitHubStarBadge } from "@/components/github-star-badge";
 import {
   defaultTextureSettings,
   defaultMaterialSettings,
@@ -592,8 +591,6 @@ export default function Home() {
           }
         }}
       />
-
-      <GitHubStarBadge />
 
       {/* Export modal */}
       <ExportModal
