@@ -472,7 +472,7 @@ export function SVGTo3DCanvas({
         ]}
         lightIntensity={lightSettings.keyIntensity}
         ambientIntensity={lightSettings.ambientIntensity}
-        shadow={lightSettings.shadowEnabled}
+        shadow={false}
         rotationX={rotationX}
         rotationY={rotationY}
         zoom={zoom}
@@ -536,14 +536,16 @@ export function SVGTo3DCanvas({
             fadeStrength={1.8}
             infiniteGrid
           />
-          <ContactShadows
-            position={[0, -1.99, 0]}
-            opacity={0.7}
-            scale={14}
-            blur={2}
-            far={6}
-            color="#001825"
-          />
+          {lightSettings.shadowEnabled && (
+            <ContactShadows
+              position={[0, -1.99, 0]}
+              opacity={0.7}
+              scale={14}
+              blur={2}
+              far={6}
+              color="#001825"
+            />
+          )}
         </group>
 
         {/* Background plane — gives glass/transmission materials something to refract through */}
